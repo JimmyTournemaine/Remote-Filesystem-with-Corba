@@ -1,17 +1,19 @@
 package files;
 
+import java.util.Iterator;
+
 public class file_listImpl extends file_listPOA
 {
     private Iterator<directory_entry> iterator;
     
     public file_listImpl(ArrayList<directory_entry> list){
-        list.iterator();
+    	iterator = list.iterator();
     }
     
 	public boolean next_one(files.directory_entryHolder e) {
-	    boolean boo = it.hasNext();
+	    boolean boo = iterator.hasNext();
 	    if(boo)
-	      e.value = it.next();
+	      e.value = iterator.next();
 	    return boo;
 	}
 }

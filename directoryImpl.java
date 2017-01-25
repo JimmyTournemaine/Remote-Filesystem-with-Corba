@@ -10,20 +10,21 @@ public class directoryImpl extends directoryPOA {
 	private ArrayList<directory_entry> files;
 	
 	public directoryImpl() {
+		file = new File("root");
+		init();
+	}
+	
+	public directoryImpl(File file) {
+		this.file = file;
+		init();
+	}
+	
+	private void init() {
 		files = new ArrayList<directory_entry>();
 		for(File f : file.listFiles()){
 			files.add(new directory_entry(f.getName(), (f.isDirectory() ? file_type.directory_type : file_type.regular_file_type) ));
 		}
 		number_of_file = files.size();
-	}
-	
-	public directoryImpl(File file) {
-		this.file = file;
-		this();
-	}
-	
-	public directoryImpl(String name, directoryImpl parent) {
-		file = new File(parent.file, name);
 	}
 
 	public int number_of_file() {
@@ -36,7 +37,7 @@ public class directoryImpl extends directoryPOA {
 			if (entry.name.equals(name)) {
 				if (entry.type != file_type.regular_file_type)
 					throw new files.invalid_type_file();
-				f.value = new regular_file(new File(file, entry.name), m);
+				f.value = new regular_file(new File(file, name), m);
 				return;
 			}
 		}
@@ -49,7 +50,7 @@ public class directoryImpl extends directoryPOA {
 			if (entry.name.equals(name)) {
 				if (entry.type != file_type.directory_type)
 					throw new files.invalid_type_file();
-				f.value = new directoryImpl(name);
+				f.value = new directoryImpl(new File(file, name));
 				return;
 			}
 		}
@@ -64,6 +65,7 @@ public class directoryImpl extends directoryPOA {
 		}
 		(new File(file, name)).createNewFile();
 		files.add(new directory_entry(name, file_type.regular_file_type));
+		number_of_file++;
 	}
 
 	public void create_directory(files.directoryHolder f, java.lang.String name) throws files.already_exist {
@@ -74,6 +76,7 @@ public class directoryImpl extends directoryPOA {
 	
 		(new File(file, name)).mkdir(); // Create the directory
 		files.add(new directory_entry(name, file_type.directory_type)); // Add entry
+		number_of_file++;
 	}
 
 	public void delete_file(java.lang.String name) throws files.no_such_file {
@@ -84,6 +87,7 @@ public class directoryImpl extends directoryPOA {
 			}
 		}
 		throw new files.no_such_file(name);
+		number_of_file--;
 	}
 
 	/**

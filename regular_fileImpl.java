@@ -5,9 +5,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.StringWriter;
 
-import com.sun.webkit.Timer.Mode;
-
-public class regular_fileImpl extends regular_filePOA {
+public class regular_fileImpl extends files.regular_filePOA {
+	
 	private String name;
 	private Mode rwx;
 	private int offset;
@@ -48,8 +47,8 @@ public class regular_fileImpl extends regular_filePOA {
 
 		if (rwx.equals(mode.write_append)) {
 			ws.append(data);
-		} else if(rwx.equals(mode.write_trunc)) {
-			ws.write(data);
+		} else { // write_trunc or read_write
+			ws.write(data, offset, size);
 		}
 		sw.write(content);
 		sw.write(data, offset, size);
@@ -71,9 +70,7 @@ public class regular_fileImpl extends regular_filePOA {
 	}
 
 	public void close() {
-	}
-
-	private size(){ 
-		return content.length();
+		rs.close();
+		ws.close();
 	}
 }
