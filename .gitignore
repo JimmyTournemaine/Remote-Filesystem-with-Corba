@@ -1,0 +1,9 @@
+*~
+classes
+generated
+*.jacorb
+*.ref
+root
+.classpath
+.project
+.DS_Store
