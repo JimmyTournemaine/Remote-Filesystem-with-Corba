@@ -7,15 +7,15 @@ module files {
   exception invalid_type_file {};
   exception invalid_operation{};
   exception already_exist {};
-	
+  exception io {};	
 
   interface regular_file {
 
     long read(in long size, inout string data)
-        raises (end_of_file,invalid_operation);
+        raises (end_of_file,invalid_operation, io);
 
     long write(in long size, in string data)
-        raises (invalid_operation);
+        raises (invalid_operation, io);
 
     void seek(in long new_offset)
         raises (invalid_offset,invalid_operation);
@@ -44,7 +44,7 @@ module files {
     readonly attribute long number_of_file;
 
     void open_regular_file(inout regular_file r, in string name, in mode m) 
-        raises (invalid_type_file, no_such_file);
+        raises (invalid_type_file, no_such_file, io);
 
     void open_directory(inout directory f, in string name)
         raises (invalid_type_file, no_such_file);

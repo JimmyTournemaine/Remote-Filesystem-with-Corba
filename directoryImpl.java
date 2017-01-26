@@ -22,7 +22,10 @@ public class directoryImpl extends directoryPOA {
 	private void init() {
 		files = new ArrayList<directory_entry>();
 		for(File f : file.listFiles()){
-			files.add(new directory_entry(f.getName(), (f.isDirectory() ? file_type.directory_type : file_type.regular_file_type) ));
+			files.add(new directory_entry(
+			    f.getName(), 
+			    f.isDirectory() ? file_type.directory_type : file_type.regular_file_type
+			));
 		}
 		number_of_file = files.size();
 	}
@@ -32,49 +35,41 @@ public class directoryImpl extends directoryPOA {
 	}
 
 	public void open_regular_file(files.regular_fileHolder r, java.lang.String name, files.mode m)
-			throws files.no_such_file, files.invalid_type_file {
-		for (directory_entry entry : files) {
-			if (entry.name.equals(name)) {
-				if (entry.type != file_type.regular_file_type)
-					throw new files.invalid_type_file();
-				f.value = new regular_file(new File(file, name), m);
-				return;
-			}
+			throws files.no_such_file, files.invalid_type_file, files.io {
+			
+		File f = new File(file, name);
+		if(!f.exists()) throw new files.no_such_file();
+		if(!f.isFile()) throw new files.invalid_type_file();
+		
+		try {
+		    f.value = new regular_fileImpl(new File(file, name), m);
+		} catch(FileNotFoundException|IOException e) {
+		    throw new io(e.getMessage());
 		}
-		throw new files.no_such_file(name);
 	}
 
 	public void open_directory(files.directoryHolder f, java.lang.String name)
 			throws files.no_such_file, files.invalid_type_file {
-		for (directory_entry entry : files) {
-			if (entry.name.equals(name)) {
-				if (entry.type != file_type.directory_type)
-					throw new files.invalid_type_file();
-				f.value = new directoryImpl(new File(file, name));
-				return;
-			}
-		}
-		throw new files.no_such_file(name);
-
+			
+	    File f = new File(file, name);
+		if(!f.exists()) throw new files.no_such_file();
+		if(!f.isFile()) throw new files.invalid_type_file();
+		f.value = new directoryImpl(new File(file, name), m);
 	}
 
 	public void create_regular_file(files.regular_fileHolder r, java.lang.String name) throws files.already_exist {
-		for (directory_entry entry : files) {
-			if (entry.name.equals(name))
-				throw new files.already_exists();
-		}
-		(new File(file, name)).createNewFile();
+		File f = new File(file, name);
+		if(f.exists()) throw new files.already_exist();
+        f.createNewFile();
 		files.add(new directory_entry(name, file_type.regular_file_type));
 		number_of_file++;
 	}
 
 	public void create_directory(files.directoryHolder f, java.lang.String name) throws files.already_exist {
-		for (directory_entry entry : files) {
-			if (entry.name.equals(name))
-				throw new files.already_exists();
-		}
+		File f = new File(file, name);
+		if(f.exists()) throw new files.already_exist();
 	
-		(new File(file, name)).mkdir(); // Create the directory
+		f.mkdir(); // Create the directory
 		files.add(new directory_entry(name, file_type.directory_type)); // Add entry
 		number_of_file++;
 	}
@@ -84,10 +79,10 @@ public class directoryImpl extends directoryPOA {
 			if (entry.name.equals(name)) {
 				(new File(file, entry.name)).delete(); // Delete the file/directory
 				files.remove(entry); // Remove the entry
+				number_of_file--;
 			}
 		}
 		throw new files.no_such_file(name);
-		number_of_file--;
 	}
 
 	/**
