@@ -1,9 +1,7 @@
-package tpcorba.exo4;
+package files;
 
 import org.omg.CORBA.*;
-
 import org.omg.PortableServer.*;
-
 import java.io.*;
 import java.lang.*;
 import java.util.*;
@@ -19,7 +17,7 @@ public class Serveur {
 			POA poa = POAHelper.narrow(orb.resolve_initial_references("RootPOA"));
 			poa.the_POAManager().activate();
 
-			directoryImpl directoryimpl = new directoryImpl();
+			directoryImpl directoryimpl = new directoryImpl(poa);
 			org.omg.CORBA.Object alloc = poa.servant_to_reference(directoryimpl);
 
 			try {

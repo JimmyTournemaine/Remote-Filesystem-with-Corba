@@ -5,7 +5,7 @@ import java.io.*;
 import java.lang.*;
 import java.util.*;
 
-public class Client {
+public class Test {
 
 	public static void main(String[] args) throws IOException {
 
@@ -67,7 +67,7 @@ public class Client {
 		    toto.create_regular_file(r, "b");
 		    b = r.value;
 		} catch(Exception e) {
-		    System.out.println(e.getMessage());
+		    e.printStackTrace();
 		}
 	}
 }

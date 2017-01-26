@@ -1,34 +1,21 @@
 MODULE = files
-JAVA  = file_listImpl.java regular_fileImpl.java directoryImpl.java Serveur.java Client.java
+JAVA  = file_listImpl.java regular_fileImpl.java directoryImpl.java Serveur.java Client.java Test.java
 IDL   = files.idl
 
 CLASS = $(JAVA:%.java=classes/$(MODULE)/%.class) 
 
-
-all: idl src root
-
-
+default: idl src
 src:	subdir $(CLASS)
 idl:	subdir $(IDL:.idl=.jacorb)
-root:
-	if [ ! -e root ]; then
-		mkdir root
-		chmod a+rwx root
-	fi
 
-
-
-############################################
-## Do not change anything after this line
-############################################
+####
 
 classes/$(MODULE)/%.class : %.java
 	javac -d classes  $<
 
 ####
 
-.SUFFIXES:
-.SUFFIXES:      .idl .jacorb
+.SUFFIXES: .idl .jacorb
 
 .idl.jacorb:
 	idl -d generated  $<
@@ -37,9 +24,8 @@ classes/$(MODULE)/%.class : %.java
 
 ####
 
-clean::
-	rm -rf core *.jacorb *.ref 
-	rm -rf classes generated
+clean:
+	rm -rf core *.jacorb *.ref *~ classes generated root
 
 ####
 
@@ -49,6 +35,10 @@ subdir:
 	fi;
 	if [ ! -d generated ]; then \
 	   mkdir generated;  \
+	fi;
+	if [ ! -d root ]; then \
+	   mkdir root;  \
+	   chmod a+rwx root; \
 	fi;
 
 
