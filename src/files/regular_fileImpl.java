@@ -1,22 +1,18 @@
 package files;
 
 import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.FileNotFoundException;
+import java.io.RandomAccessFile;
 import java.io.IOException;
 
 public class regular_fileImpl extends files.regular_filePOA {
 	
 	private mode rwx;
-	private int offset;
-	private File file;
-	private FileReader rs;
-	private FileWriter ws;
+	private RandomAccessFile raf;
 
-	public regular_fileImpl(File file, mode m) {
-		this.file = file;
+	public regular_fileImpl(File file, mode m) throws FileNotFoundException {
+		raf = new RandomAccessFile(file, "rw");
 		rwx = m;
-		offset = 0;
 	}
 
 	public int read(int size, org.omg.CORBA.StringHolder data) throws files.invalid_operation, files.end_of_file, files.io {
@@ -27,39 +23,38 @@ public class regular_fileImpl extends files.regular_filePOA {
 		}
 
 		/* Read the file */
-		int char_read;
+		int char_read = 0;
 		try {
-			rs = new FileReader(file);
-		    char[] cbuf = new char[size];
-		    char_read = rs.read(cbuf, offset, size);
-		    String str = new String(cbuf);
-		    data.value = str;
+			char[] cbuf = new char[size];
+			for(int i=0; i<size; i++){
+				cbuf[i] = raf.readChar();
+				char_read++;
+			}
+		    data.value = new String(cbuf);
 		    
-		    /* End of file reached */
-		    if (-1 == char_read) {
-			    throw new files.end_of_file();
-		    }
-		    rs.close();
-		} catch (IOException e) {
-		    throw new files.io(e.getMessage());
+		} catch(java.io.EOFException e) {
+			throw new files.end_of_file(e.getMessage());
+		}
+		catch (IOException e1) {
+		    throw new files.io(e1.getMessage());
 		}
 		
 		return char_read;
 	}
 
+	// TODO write only size characters
 	public int write(int size, java.lang.String data) throws files.invalid_operation, files.io {
 		/* Deny access for read only authorization */
 		if (rwx.equals(mode.read_only))
 			throw new files.invalid_operation();
 
         try {
-        	ws = new FileWriter(file);
 		    if (rwx.equals(mode.write_append)) {
-			    ws.append(data);
+		    	raf.seek(raf.length());
+			    raf.writeUTF(data);
 		    } else { // write_trunc or read_write
-			    ws.write(data, offset, size);
+		    	raf.writeUTF(data);
 		    }
-		    ws.close();
 		} catch (IOException e) {
 		    throw new files.io(e.getMessage());
 		}
@@ -73,18 +68,12 @@ public class regular_fileImpl extends files.regular_filePOA {
 			throw new files.invalid_operation();
 
 		/* Check new offset value */
-		if (new_offset < 0 || new_offset >= file.length())
-			throw new files.invalid_offset();
-		
-		offset = new_offset;
-	}
-
-	public void close() {
 		try {
-		    rs.close();
-		    ws.close();
-		} catch(Exception e) {
-		    e.printStackTrace();
+			raf.seek(new_offset);
+		} catch (IOException e) {
+			throw new files.invalid_offset();
 		}
 	}
+
+	public void close() {}
 }

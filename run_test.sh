@@ -22,7 +22,11 @@ fi
 echo "Running..."
 jaco files.Serveur &
 SERVER_PID=$!
-sleep 3 # Wait until the server is ready
+if [ -z $1 ]; then
+    sleep 3
+else
+    sleep $1
+fi
 jaco files.test.Test
 kill $SERVER_PID
 

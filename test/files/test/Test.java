@@ -71,9 +71,8 @@ public class Test {
 		    b = r.value;
 		    
 		    a.write(13, "J'écris dans a.");
-		    a.seek(0);
-		    a.read(13, sh);
-		    System.out.println(sh.value);
+		    a.seek(14);
+		    //a.write(2, "a.");
 		    
 		} catch(files.io io) {
 			System.out.println("Serveur side io error :");

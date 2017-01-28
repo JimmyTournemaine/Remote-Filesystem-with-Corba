@@ -9,7 +9,6 @@ public class directoryImpl extends directoryPOA {
 
 	File file = new File("root");
 	private int number_of_file;
-	private ArrayList<directory_entry> files;
 	private POA poa_;
 	
 	public directoryImpl(POA poa) {
@@ -25,14 +24,7 @@ public class directoryImpl extends directoryPOA {
 	}
 	
 	private void init() {
-		files = new ArrayList<directory_entry>();
-		for(File f : file.listFiles()){
-			files.add(new directory_entry(
-			    f.getName(), 
-			    f.isDirectory() ? file_type.directory_type : file_type.regular_file_type
-			));
-		}
-		number_of_file = files.size();
+		number_of_file = this.file.list().length;
 	}
 
 	public int number_of_file() {
@@ -66,13 +58,12 @@ public class directoryImpl extends directoryPOA {
         }
 	}
 
-	public void create_regular_file(files.regular_fileHolder r, java.lang.String name) throws files.already_exist {
+	public void create_regular_file(files.regular_fileHolder r, java.lang.String name) throws files.already_exist, files.io {
 		File f = new File(file, name);
 		if(f.exists()) 
 		    throw new files.already_exist(); 
 		try {
 		    f.createNewFile();
-		    files.add(new directory_entry(name, file_type.regular_file_type));
 		    number_of_file++;
 		    r.value = (regular_file) impl_to_narrowed(new regular_fileImpl(new File(file, name), mode.write_trunc));
 		    
@@ -80,7 +71,7 @@ public class directoryImpl extends directoryPOA {
 		    org.omg.CORBA.Object o = poa_.servant_to_reference(fileImpl);
 		    r.value = regular_fileHelper.narrow(o);
 		} catch(Exception e) {
-		    System.out.println("An error occured during the creation of file "+name);
+		    throw new files.io(e.getMessage());
 		}
 	}
 
@@ -89,8 +80,6 @@ public class directoryImpl extends directoryPOA {
 		if(f.exists()) throw new files.already_exist(name+" already exists.");
 		f.mkdir(); // Create the directory
 		
-		directory_entry de = new directory_entry(name, file_type.directory_type);
-		files.add(de); // Add entry
 		number_of_file++;
 		
 		try {
@@ -102,16 +91,11 @@ public class directoryImpl extends directoryPOA {
         }
 	}
 
-	// TODO Deactivate the corba object
 	public void delete_file(java.lang.String name) throws files.no_such_file {
-		for (directory_entry entry : files) {
-			if (entry.name.equals(name)) {
-				(new File(file, entry.name)).delete(); // Delete the file/directory
-				files.remove(entry); // Remove the entry
-				number_of_file--;
-			}
-		}
-		throw new files.no_such_file(name);
+		File f = new File(file, name);
+		if(!f.exists()) throw new files.no_such_file(name);
+		f.delete();
+		number_of_file--;
 	}
 	
 	public Object impl_to_narrowed(Servant impl) 
@@ -129,6 +113,17 @@ public class directoryImpl extends directoryPOA {
 	 * @return The number of files
 	 */
 	public int list_files(files.file_listHolder l) {
+		
+		/* Get files */
+		ArrayList<directory_entry> files = new ArrayList<directory_entry>();
+		for(File f : file.listFiles()){
+			files.add(new directory_entry(
+			    f.getName(), 
+			    f.isDirectory() ? file_type.directory_type : file_type.regular_file_type
+			));
+		}
+		
+		/* Return the iterator on the list of directory_entry */
 		try {
 			file_listImpl fl = new file_listImpl(files);
 			Object o = poa_.servant_to_reference(fl);
