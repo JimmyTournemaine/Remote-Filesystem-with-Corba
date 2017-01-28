@@ -51,7 +51,6 @@ module files {
 
     void create_regular_file(inout regular_file r, in string name)
         raises (already_exist, io);
-
     void create_directory(inout directory f, in string name)
         raises (already_exist);
 

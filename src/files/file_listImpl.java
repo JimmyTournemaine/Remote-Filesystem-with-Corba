@@ -3,8 +3,6 @@ package files;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.omg.PortableServer.POA;
-
 public class file_listImpl extends file_listPOA
 {
     private Iterator<directory_entry> iterator;

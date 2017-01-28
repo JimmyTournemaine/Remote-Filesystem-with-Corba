@@ -1,11 +1,11 @@
-package files;
+package files.test;
+
+import files.*;
 
 import org.omg.CORBA.*;
 import java.io.*;
-import java.lang.*;
-import java.util.*;
 
-public class Client {
+public class Test {
 
 	public static void main(String[] args) throws IOException {
 
@@ -40,6 +40,9 @@ public class Client {
 
 		directoryHolder f = new directoryHolder();
 		regular_fileHolder r = new regular_fileHolder();
+		file_listHolder lh = new file_listHolder();
+		directory_entryHolder de = new directory_entryHolder();
+		StringHolder sh = new StringHolder();
 		directory toto, titi;
 		regular_file a, b, c;
 		
@@ -66,8 +69,17 @@ public class Client {
 		
 		    toto.create_regular_file(r, "b");
 		    b = r.value;
+		    
+		    a.write(13, "J'écris dans a.");
+		    a.seek(0);
+		    a.read(13, sh);
+		    System.out.println(sh.value);
+		    
+		} catch(files.io io) {
+			System.out.println("Serveur side io error :");
+			io.printStackTrace();
 		} catch(Exception e) {
-		    System.out.println(e.getMessage());
+		    e.printStackTrace();
 		}
 	}
 }

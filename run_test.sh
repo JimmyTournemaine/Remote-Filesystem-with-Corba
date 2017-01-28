@@ -12,7 +12,7 @@ make clean > /dev/null
 
 # Build
 echo "Compile..."
-make > /dev/null
+make test > /dev/null
 if [ $? -ne 0 ]; then
     echo "Compilation failed. Aborted."
     exit 1
@@ -23,7 +23,7 @@ echo "Running..."
 jaco files.Serveur &
 SERVER_PID=$!
 sleep 3 # Wait until the server is ready
-jaco files.Test
+jaco files.test.Test
 kill $SERVER_PID
 
 exit 0

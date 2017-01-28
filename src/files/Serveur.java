@@ -3,8 +3,6 @@ package files;
 import org.omg.CORBA.*;
 import org.omg.PortableServer.*;
 import java.io.*;
-import java.lang.*;
-import java.util.*;
 
 public class Serveur {
 	public static void main(String[] args) throws IOException {

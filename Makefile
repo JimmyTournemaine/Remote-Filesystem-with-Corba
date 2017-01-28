@@ -1,16 +1,19 @@
 MODULE = files
-JAVA  = file_listImpl.java regular_fileImpl.java directoryImpl.java Serveur.java Client.java Test.java
+JAVA  = file_listImpl.java regular_fileImpl.java directoryImpl.java Serveur.java Client.java
+
 IDL   = files.idl
 
 CLASS = $(JAVA:%.java=classes/$(MODULE)/%.class) 
 
 default: idl src
+test: idl src test_compile
+
 src:	subdir $(CLASS)
 idl:	subdir $(IDL:.idl=.jacorb)
 
 ####
 
-classes/$(MODULE)/%.class : src/%.java
+classes/$(MODULE)/%.class : src/files/%.java
 	javac -d classes  $<
 
 ####
@@ -23,6 +26,9 @@ classes/$(MODULE)/%.class : src/%.java
 	touch $*.jacorb 
 
 ####
+
+test_compile: test/files/test/Test.java
+	javac -d classes test/files/test/Test.java
 
 clean:
 	rm -rf core *.jacorb *.ref *~ classes generated root
