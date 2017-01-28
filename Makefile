@@ -10,7 +10,7 @@ idl:	subdir $(IDL:.idl=.jacorb)
 
 ####
 
-classes/$(MODULE)/%.class : %.java
+classes/$(MODULE)/%.class : src/%.java
 	javac -d classes  $<
 
 ####

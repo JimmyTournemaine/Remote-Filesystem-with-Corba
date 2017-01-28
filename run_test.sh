@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # Check idl
-if ! type "idl" &> /dev/null; then
+if ! type "idl" 2> /dev/null; then
   echo "idl command is missing, please run corba script before running this script."
   exit 1
 fi
