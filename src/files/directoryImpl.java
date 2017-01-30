@@ -65,11 +65,7 @@ public class directoryImpl extends directoryPOA {
 		try {
 		    f.createNewFile();
 		    number_of_file++;
-		    r.value = (regular_file) impl_to_narrowed(new regular_fileImpl(new File(file, name), mode.write_trunc));
-		    
-		    regular_fileImpl fileImpl = new regular_fileImpl(new File(file, name), mode.write_trunc);
-		    org.omg.CORBA.Object o = poa_.servant_to_reference(fileImpl);
-		    r.value = regular_fileHelper.narrow(o);
+		    r.value = (regular_file) impl_to_narrowed(new regular_fileImpl(new File(file, name), mode.read_write));
 		} catch(Exception e) {
 		    throw new files.io(e.getMessage());
 		}

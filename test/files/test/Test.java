@@ -42,9 +42,9 @@ public class Test {
 		regular_fileHolder r = new regular_fileHolder();
 		file_listHolder lh = new file_listHolder();
 		directory_entryHolder de = new directory_entryHolder();
-		StringHolder sh = new StringHolder();
 		directory toto, titi;
 		regular_file a, b, c;
+		String message;
 		
 		////////////////////////////////////////////////////
 		// Jeu de tests
@@ -70,13 +70,36 @@ public class Test {
 		    toto.create_regular_file(r, "b");
 		    b = r.value;
 		    
-		    a.write(13, "J'écris dans a.");
-		    a.seek(14);
-		    //a.write(2, "a.");
+		    message = "I'm writing in a.";
+		    a.write(message.length(), message); // I'm writing in a.
+		    a.seek(message.length());
+		    message = " I append some text now.";
+		    a.write(message.length()-5, message); // I append some text
+		    
+		    /* Reading */
+		    StringHolder sh = new StringHolder(new String());
+		    try {
+			    a.seek(0);
+			    System.out.println("read : "+a.read(50, sh));
+		    } catch(files.end_of_file eof) { // EOF should be thrown
+		    	System.out.println(sh.value);
+		    	if(!sh.value.equals("I'm writing in a. I append some text")) 
+			    	throw new Exception ("String read does not corresponding with the written one.");
+		    }
+		    
+		    /* Write append in b */
+		    root.open_regular_file(r, "toto/b", mode.write_append);
+		    b = r.value;
+		    try {
+		    	b.seek(0);
+		    } catch(files.invalid_operation io) { // Cannot call seek in write_append mode
+		    	
+		    }
 		    
 		} catch(files.io io) {
-			System.out.println("Serveur side io error :");
-			io.printStackTrace();
+			System.out.println("I/O Error :" + io.getMessage());
+		} catch(files.invalid_operation io1) {
+			System.out.println("Invalid operation :" + io1.getMessage());
 		} catch(Exception e) {
 		    e.printStackTrace();
 		}
