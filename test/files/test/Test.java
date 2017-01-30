@@ -11,13 +11,14 @@ import org.omg.CORBA.StringHolder;
 import files.*;
 import junit.framework.TestCase;
 
+/**
+ * This test case must be executed in a clean environment.
+ * Be sure that the root folder exists and is empty before running this test.
+ */
 public class Test extends TestCase {
 
 	private directory root;
 
-	/**
-	 * @Before
-	 */
 	protected void setUp() throws Exception {
 		ORB orb = ORB.init(new String[0], null);
 		String ior = null;
@@ -48,11 +49,6 @@ public class Test extends TestCase {
 		}
 	}
 
-	/**
-	 * @throws already_exist
-	 * @throws io
-	 * @Test
-	 */
 	public void testCreation() throws already_exist, io {
 		directoryHolder f = new directoryHolder();
 		regular_fileHolder r = new regular_fileHolder();
@@ -68,35 +64,38 @@ public class Test extends TestCase {
 		// b
 		////////////////////////////////////////////////////
 
-		/* Création de la hiérarchie */
-		root.create_directory(f, "toto");
-		toto = f.value;
-
-		root.create_directory(f, "titi");
-		root.create_regular_file(r, "a");
-		toto.create_regular_file(r, "b");
+		/* Legit creation */
+		try {
+			root.create_directory(f, "toto");
+			toto = f.value;
+	
+			root.create_directory(f, "titi");
+			root.create_regular_file(r, "a");
+			toto.create_regular_file(r, "b");
+		} catch(files.io io) {
+			fail(io.getMessage());
+		}
+		
+		/* Folder already existing */
+		try {
+			root.create_directory(f, "toto");
+			fail("An exception should be thrown.");
+		} catch(files.already_exist e) {}
+		
+		/* File already existing + relative path */
+		try {
+			root.create_regular_file(r, "toto/b");
+			fail("An exception should be thrown.");
+		} catch(files.already_exist e) {}
 	}
 
-	/**
-	 * @throws invalid_type_file
-	 * @throws no_such_file
-	 * @Test
-	 */
-	public void testOpenDirectory() throws no_such_file, invalid_type_file {
+	public void testOpening() throws no_such_file, invalid_type_file {
 		directoryHolder f = new directoryHolder();
 
 		root.open_directory(f, "toto");
 		root.open_directory(f, "titi");
 	}
 
-	/**
-	 * @throws io
-	 * @throws invalid_type_file
-	 * @throws no_such_file
-	 * @throws invalid_operation
-	 * @throws invalid_offset
-	 * @Test
-	 */
 	public void testRead() throws no_such_file, invalid_type_file, io, invalid_operation, invalid_offset {
 		regular_fileHolder f = new regular_fileHolder();
 		root.open_regular_file(f, "a", mode.read_write);

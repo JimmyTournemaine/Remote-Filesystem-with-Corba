@@ -8,3 +8,4 @@ root
 .project
 .DS_Store
 /bin/
+.settings

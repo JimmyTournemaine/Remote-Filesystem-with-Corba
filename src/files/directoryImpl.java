@@ -2,8 +2,12 @@ package files;
 
 import java.util.ArrayList;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 import org.omg.PortableServer.*;
+import org.omg.PortableServer.POAPackage.ServantNotActive;
+import org.omg.PortableServer.POAPackage.WrongPolicy;
 
 public class directoryImpl extends directoryPOA {
 
@@ -50,7 +54,7 @@ public class directoryImpl extends directoryPOA {
 			
 	    File f = new File(file, name);
 		if(!f.exists()) throw new files.no_such_file();
-		if(!f.isFile()) throw new files.invalid_type_file();
+		if(!f.isDirectory()) throw new files.invalid_type_file();
 		try {
 		    r.value = (directory) impl_to_narrowed(new directoryImpl(poa_, new File(file, name)));
 		} catch(Exception e) {
@@ -60,8 +64,7 @@ public class directoryImpl extends directoryPOA {
 
 	public void create_regular_file(files.regular_fileHolder r, java.lang.String name) throws files.already_exist, files.io {
 		File f = new File(file, name);
-		if(f.exists()) 
-		    throw new files.already_exist(); 
+		if(f.exists()) throw new files.already_exist(); 
 		try {
 		    f.createNewFile();
 		    number_of_file++;
@@ -71,10 +74,10 @@ public class directoryImpl extends directoryPOA {
 		}
 	}
 
-	public void create_directory(files.directoryHolder r, java.lang.String name) throws files.already_exist {
+	public void create_directory(files.directoryHolder r, java.lang.String name) throws files.already_exist, files.io {
 		File f = new File(file, name);
 		if(f.exists()) throw new files.already_exist(name+" already exists.");
-		f.mkdir(); // Create the directory
+		if(f.mkdir() == false) throw new files.io();
 		
 		number_of_file++;
 		
@@ -95,7 +98,7 @@ public class directoryImpl extends directoryPOA {
 	}
 	
 	public Object impl_to_narrowed(Servant impl) 
-	        throws org.omg.PortableServer.POAPackage.ServantNotActive, org.omg.PortableServer.POAPackage.WrongPolicy {
+	        throws ServantNotActive, WrongPolicy {
         org.omg.CORBA.Object o = poa_.servant_to_reference(impl);
         if(impl instanceof directoryImpl) {
             return directoryHelper.narrow(o);
