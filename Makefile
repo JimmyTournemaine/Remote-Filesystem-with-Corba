@@ -1,6 +1,5 @@
 MODULE = files
 JAVA  = file_listImpl.java regular_fileImpl.java directoryImpl.java Serveur.java Client.java
-
 IDL   = files.idl
 
 CLASS = $(JAVA:%.java=classes/$(MODULE)/%.class) 
@@ -28,7 +27,7 @@ classes/$(MODULE)/%.class : src/files/%.java
 ####
 
 test_compile: test/files/test/Test.java
-	javac -d classes test/files/test/Test.java
+	javac -cp .:classes:/home/tp/JACORB/JacORB/test/regression/lib/junit.jar -d classes test/files/test/Test.java
 
 clean:
 	rm -rf core *.jacorb *.ref *~ classes generated root

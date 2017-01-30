@@ -27,7 +27,7 @@ if [ -z $1 ]; then
 else
     sleep $1
 fi
-jaco files.test.Test
+junit files.test.Test
 kill $SERVER_PID
 
 exit 0
