@@ -1,3 +1,7 @@
+/*
+ * Created on 25 jan. 2017 under the authority of Franck Singhoff 
+ * as part of practical work at the University of Western Brittany
+ */
 package files;
 
 import org.omg.CORBA.*;

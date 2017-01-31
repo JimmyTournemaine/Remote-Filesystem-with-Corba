@@ -1,3 +1,7 @@
+/*
+ * Created on 25 jan. 2017 under the authority of Franck Singhoff 
+ * as part of practical work at the University of Western Brittany
+ */
 package files;
 
 import java.util.ArrayList;
@@ -12,7 +16,6 @@ public class file_listImpl extends file_listPOA
     }
     
 	public boolean next_one(files.directory_entryHolder e) {
-		System.out.println("GO");
 	    boolean boo = iterator.hasNext();
 	    if(boo) {
 	    	e.value = iterator.next();

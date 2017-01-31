@@ -1,7 +1,10 @@
+/*
+ * Created on 25 jan. 2017 under the authority of Franck Singhoff 
+ * as part of practical work at the University of Western Brittany
+ */
 package files;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.RandomAccessFile;
 import java.io.IOException;
 
@@ -11,10 +14,20 @@ public class regular_fileImpl extends files.regular_filePOA {
 	private mode rwx;
 	private RandomAccessFile raf;
 
-	public regular_fileImpl(File file, mode m) throws FileNotFoundException {
+	public regular_fileImpl(File file, mode m) throws IOException {
 		name = file.getName();
 		raf = new RandomAccessFile(file, "rw");
 		rwx = m;
+		switch(m.value()) {
+			case mode._write_trunc:
+				raf.setLength(0);
+			case mode._read_only:
+			case mode._read_write:
+				raf.seek(0);
+				break;
+			case mode._write_append:
+				raf.seek(raf.length());
+		}
 	}
 
 	public int read(int size, org.omg.CORBA.StringHolder data) throws files.invalid_operation, files.end_of_file, files.io {	
@@ -29,13 +42,12 @@ public class regular_fileImpl extends files.regular_filePOA {
 		byte[] cbuf = new byte[size];
 		try {
 			char_read = raf.read(cbuf);
-		} catch(java.io.EOFException e) {
-			throw new files.end_of_file(e.getMessage());
 		} catch (Exception e1) {
 		    throw new files.io(e1.getMessage());
-		} finally {
-			data.value = new String(cbuf);
 		}
+		if(char_read == -1 ) throw new files.end_of_file();
+		
+		data.value = new String(cbuf, 0, char_read);
 		
 		return char_read;
 	}
@@ -70,5 +82,11 @@ public class regular_fileImpl extends files.regular_filePOA {
 		}
 	}
 
-	public void close() {}
+	public void close() {
+		try {
+			raf.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

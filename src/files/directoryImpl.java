@@ -1,9 +1,11 @@
+/*
+ * Created on 25 jan. 2017 under the authority of Franck Singhoff 
+ * as part of practical work at the University of Western Brittany
+ */
 package files;
 
 import java.util.ArrayList;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import org.omg.PortableServer.*;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
