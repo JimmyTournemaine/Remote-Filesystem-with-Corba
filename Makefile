@@ -1,10 +1,11 @@
 MODULE = files
-JAVA  = file_listImpl.java regular_fileImpl.java directoryImpl.java Serveur.java Client.java
+JAVA  = file_listImpl.java regular_fileImpl.java directoryImpl.java Serveur.java
 IDL   = files.idl
 
 CLASS = $(JAVA:%.java=classes/$(MODULE)/%.class) 
 
 default: idl src
+console : idl src console_compile
 test: idl src test_compile
 
 src:	subdir $(CLASS)
@@ -25,6 +26,10 @@ classes/$(MODULE)/%.class : src/files/%.java
 	touch $*.jacorb 
 
 ####
+
+console_compile:
+	javac -cp .:classes -d classes src/files/console/**/*.java
+	javac -cp .:classes -d classes src/files/console/Console.java
 
 test_compile: test/files/test/Test.java
 	javac -cp .:classes:/home/tp/JACORB/JacORB/test/regression/lib/junit.jar -d classes test/files/test/Test.java

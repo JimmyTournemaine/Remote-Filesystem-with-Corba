@@ -95,12 +95,23 @@ public class directoryImpl extends directoryPOA {
 	public void delete_file(java.lang.String name) throws files.no_such_file {
 		File f = new File(file, name);
 		if(!f.exists()) throw new files.no_such_file(name);
-		f.delete();
+		if(f.isFile()) f.delete();
+		if(f.isDirectory()) this.delete_file(f);
 		number_of_file--;
 	}
 	
-	public Object impl_to_narrowed(Servant impl) 
-	        throws ServantNotActive, WrongPolicy {
+	private void delete_file(File f)
+	{
+		for(File d : f.listFiles()) {
+			if(d.isDirectory())
+				this.delete_file(d);
+			else
+				d.delete();
+		}
+		f.delete();
+	}
+	
+	public Object impl_to_narrowed(Servant impl) throws ServantNotActive, WrongPolicy {
         org.omg.CORBA.Object o = poa_.servant_to_reference(impl);
         if(impl instanceof directoryImpl) {
             return directoryHelper.narrow(o);

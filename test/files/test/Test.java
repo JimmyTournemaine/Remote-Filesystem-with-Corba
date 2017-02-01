@@ -260,4 +260,32 @@ public class Test extends TestCase {
 		a.read(message.length()+36, sh); // +36 to check that previous text has been erased.
 		assertEquals("I'm truncating the file.", sh.value);
 	}
+	
+	public void testDelete() throws Exception 
+	{
+		root.delete_file("titi"); 	// Delete empty folder
+		root.delete_file("toto"); 	// Delete folder recursively
+		root.delete_file("a"); 		// Delete regular file
+		
+		try {
+			root.delete_file("tutu");
+			fail("Trying to delete \"tutu\" should throw a files.no_such_file exception.");
+		} catch(no_such_file e) {}
+		
+		/* Check data all files/folders has been deleted */
+		regular_fileHolder fh = new regular_fileHolder();
+		directoryHolder dh = new directoryHolder();
+		try {
+			root.open_directory(dh, "toto");
+			fail();
+		} catch(no_such_file e) {}
+		try {
+			root.open_directory(dh, "titi");
+			fail();
+		} catch(no_such_file e) {}
+		try {
+			root.open_regular_file(fh, "a", mode.read_only);
+			fail();
+		} catch(no_such_file e) {}
+	}
 }
