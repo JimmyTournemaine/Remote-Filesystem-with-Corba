@@ -127,6 +127,18 @@ public class Test extends TestCase {
 		} catch (invalid_type_file e) {
 		}
 	}
+	
+	public void testNumberOfFile() throws Exception {
+		directoryHolder f = new directoryHolder();
+		root.open_directory(f, "toto");
+		directory toto = f.value;
+		root.open_directory(f, "titi");
+		directory titi = f.value;
+		
+		assertEquals(3, root.number_of_file());
+		assertEquals(1, toto.number_of_file());
+		assertEquals(0, titi.number_of_file());
+	}
 
 	public void testListing() {
 		directory_entryHolder eh = new directory_entryHolder(new directory_entry("", file_type.regular_file_type));
