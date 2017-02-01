@@ -157,14 +157,42 @@ public class Test extends TestCase {
 		assertEquals(36, a.read(36, sh));
 		assertEquals("I'm writing in a. I append some text", sh.value);
 
-		/* Bad offset */
-		try {
-			a.seek(50);
-		} catch (files.invalid_offset e) {
-		}
-
 		/* Close */
 		a.close();
+	}
+	
+	public void testOffset() throws Exception {
+		regular_fileHolder f = new regular_fileHolder();
+		root.open_regular_file(f, "a", mode.read_write);
+		regular_file a = f.value;
+		
+		a.seek(1000); // no problem to seek after EOF
+		try {
+			a.seek(-12);
+			fail("A files.invalid_offset exception should be thrown.");
+		} catch (files.invalid_offset e) {}
+		
+		a.close();
+	}
+	
+	public void testOperationAfterClose() throws Exception {
+		regular_fileHolder f = new regular_fileHolder();
+		root.open_regular_file(f, "a", mode.read_write);
+		regular_file a = f.value;
+		
+		a.close();
+		try {
+			a.read(3, new StringHolder(""));
+			fail("An invalid_operation exception should be thrown.");
+		} catch(invalid_operation e) {}
+		try {
+			a.write(3, "abc");
+			fail("An invalid_operation exception should be thrown.");
+		} catch(invalid_operation e) {}
+		try {
+			a.seek(3);
+			fail("An invalid_operation exception should be thrown.");
+		} catch(invalid_operation e) {}
 	}
 
 	public void testZeroTerminatedByte() throws Exception {

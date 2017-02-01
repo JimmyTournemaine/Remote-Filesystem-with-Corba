@@ -30,7 +30,7 @@ public class regular_fileImpl extends files.regular_filePOA {
 		}
 	}
 
-	public int read(int size, org.omg.CORBA.StringHolder data) throws files.invalid_operation, files.end_of_file, files.io {	
+	public int read(int size, org.omg.CORBA.StringHolder data) throws files.invalid_operation, files.end_of_file {	
 		
 		/* Deny access unless granted read authorization */
 		if (rwx.value() != mode._read_only && rwx.value() != mode._read_write) {
@@ -43,7 +43,7 @@ public class regular_fileImpl extends files.regular_filePOA {
 		try {
 			char_read = raf.read(cbuf);
 		} catch (Exception e1) {
-		    throw new files.io(e1.getMessage());
+		    throw new files.invalid_operation();
 		}
 		if(char_read == -1 ) throw new files.end_of_file();
 		
@@ -52,7 +52,7 @@ public class regular_fileImpl extends files.regular_filePOA {
 		return char_read;
 	}
 
-	public int write(int size, java.lang.String data) throws files.invalid_operation, files.io {
+	public int write(int size, java.lang.String data) throws files.invalid_operation {
 		/* Deny access for read only authorization */
 		if (rwx.equals(mode.read_only))
 			throw new files.invalid_operation();
@@ -63,7 +63,7 @@ public class regular_fileImpl extends files.regular_filePOA {
 		    }
 		    raf.writeBytes(data.substring(0, size));
 		} catch (IOException e) {
-		    throw new files.io(e.getMessage());
+		    throw new files.invalid_operation();
 		}
 
 		return data.length();
@@ -74,11 +74,13 @@ public class regular_fileImpl extends files.regular_filePOA {
 		if (rwx.equals(mode.write_append))
 			throw new files.invalid_operation();
 
+		if(new_offset < 0) throw new files.invalid_offset();
+		
 		/* Check new offset value */
 		try {
 			raf.seek(new_offset);
 		} catch (IOException e) {
-			throw new files.invalid_offset(e.getMessage());
+			throw new files.invalid_operation();
 		}
 	}
 
@@ -88,5 +90,9 @@ public class regular_fileImpl extends files.regular_filePOA {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public String name() {
+		return name;
 	}
 }

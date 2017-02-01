@@ -145,4 +145,9 @@ public class directoryImpl extends directoryPOA {
 		}
 		return files.size();
 	}
+
+	@Override
+	public String name() {
+		return file.getName();
+	}
 }
