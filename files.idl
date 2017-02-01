@@ -12,15 +12,17 @@ module files {
   interface regular_file {
 
     long read(in long size, inout string data)
-        raises (end_of_file,invalid_operation, io);
+        raises (end_of_file,invalid_operation);
 
     long write(in long size, in string data)
-        raises (invalid_operation, io);
+        raises (invalid_operation);
 
     void seek(in long new_offset)
         raises (invalid_offset,invalid_operation);
 
     void close();
+    
+    string name();
   };
 
 
@@ -58,6 +60,8 @@ module files {
         raises (no_such_file);
 
     long list_files(inout file_list l);
+    
+    string name();
   };
 
 };
