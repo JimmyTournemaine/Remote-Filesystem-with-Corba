@@ -1,0 +1,10 @@
+
+module admin {
+
+    interface server_handler;
+    interface server_handler {
+        void shutdown();
+    };
+};
+
+

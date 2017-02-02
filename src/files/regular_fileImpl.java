@@ -66,7 +66,7 @@ public class regular_fileImpl extends files.regular_filePOA {
 		    throw new files.invalid_operation();
 		}
 
-		return data.length();
+		return size;
 	}
 
 	public void seek(int new_offset) throws files.invalid_offset, files.invalid_operation {
