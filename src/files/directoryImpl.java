@@ -6,6 +6,7 @@ package files;
 
 import java.util.ArrayList;
 import java.io.File;
+import java.io.IOException;
 
 import org.omg.PortableServer.*;
 import org.omg.PortableServer.POAPackage.ServantNotActive;
@@ -19,13 +20,13 @@ public class directoryImpl extends directoryPOA {
 	
 	public directoryImpl(POA poa) {
 	    poa_ = poa;
-		this.file = new File("root");
+		file = getRoot();
 		init();
 	}
 	
-	public directoryImpl(POA poa, File file) {
+	public directoryImpl(POA poa, File file) throws IOException {
 	    poa_ = poa;
-		this.file = file;
+		this.file = file.getCanonicalFile(); // Remove ".." from path
 		init();
 	}
 	
@@ -33,10 +34,12 @@ public class directoryImpl extends directoryPOA {
 		number_of_file = this.file.list().length;
 	}
 
+	@Override
 	public int number_of_file() {
 		return number_of_file;
 	}
 
+	@Override
 	public void open_regular_file(files.regular_fileHolder r, java.lang.String name, files.mode m)
 			throws files.no_such_file, files.invalid_type_file, files.io {
 			
@@ -51,10 +54,12 @@ public class directoryImpl extends directoryPOA {
 		}
 	}
 
+	@Override
 	public void open_directory(files.directoryHolder r, java.lang.String name)
-			throws files.no_such_file, files.invalid_type_file {
-			
-	    File f = new File(file, name);
+			throws files.no_such_file, files.invalid_type_file, files.access_denied {
+
+		File f = new File(file, name);
+	    if(isRootParent(f)) throw new files.access_denied();
 		if(!f.exists()) throw new files.no_such_file();
 		if(!f.isDirectory()) throw new files.invalid_type_file();
 		try {
@@ -64,6 +69,7 @@ public class directoryImpl extends directoryPOA {
         }
 	}
 
+	@Override
 	public void create_regular_file(files.regular_fileHolder r, java.lang.String name) throws files.already_exist, files.io {
 		File f = new File(file, name);
 		if(f.exists()) throw new files.already_exist(); 
@@ -76,6 +82,7 @@ public class directoryImpl extends directoryPOA {
 		}
 	}
 
+	@Override
 	public void create_directory(files.directoryHolder r, java.lang.String name) throws files.already_exist, files.io {
 		File f = new File(file, name);
 		if(f.exists()) throw new files.already_exist(name+" already exists.");
@@ -92,6 +99,7 @@ public class directoryImpl extends directoryPOA {
         }
 	}
 
+	@Override
 	public void delete_file(java.lang.String name) throws files.no_such_file {
 		File f = new File(file, name);
 		if(!f.exists()) throw new files.no_such_file(name);
@@ -111,7 +119,7 @@ public class directoryImpl extends directoryPOA {
 		f.delete();
 	}
 	
-	public Object impl_to_narrowed(Servant impl) throws ServantNotActive, WrongPolicy {
+	private Object impl_to_narrowed(Servant impl) throws ServantNotActive, WrongPolicy {
         org.omg.CORBA.Object o = poa_.servant_to_reference(impl);
         if(impl instanceof directoryImpl) {
             return directoryHelper.narrow(o);
@@ -124,6 +132,7 @@ public class directoryImpl extends directoryPOA {
 	 * @param l a file_listHolder to get the list_file
 	 * @return The number of files
 	 */
+	@Override
 	public int list_files(files.file_listHolder l) {
 		
 		/* Get files */
@@ -149,5 +158,19 @@ public class directoryImpl extends directoryPOA {
 	@Override
 	public String name() {
 		return file.getName();
+	}
+	
+	private File getRoot() {
+		return new File("root");
+	}
+	
+	private boolean isRootParent(File f) {
+		try {
+			if(!f.getCanonicalPath().contains(getRoot().getName()))
+				return true;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 }

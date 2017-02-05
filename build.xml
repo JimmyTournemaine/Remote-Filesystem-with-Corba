@@ -6,7 +6,7 @@
          
                    
      Jimmy Tournemaine
-     Pierre Siguret                                                                
+     Pierre Siguret                                                             
      ====================================================================== -->
 
 <project name="Remote Filesystem with CORBA" default="compile">

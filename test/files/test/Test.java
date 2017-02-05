@@ -91,7 +91,7 @@ public class Test extends TestCase {
 		}
 	}
 
-	public void testOpening() throws no_such_file, invalid_type_file, io {
+	public void testOpening() throws no_such_file, invalid_type_file, io, access_denied {
 		directoryHolder f = new directoryHolder();
 		regular_fileHolder r = new regular_fileHolder();
 
@@ -327,5 +327,12 @@ public class Test extends TestCase {
 			root.open_regular_file(fh, "a", mode.read_only);
 			fail();
 		} catch(no_such_file e) {}
+	}
+	
+	public void testAccessDenied() throws Exception {
+		try {
+			root.open_directory(new directoryHolder(), "..");
+			fail();
+		} catch (access_denied e) {}
 	}
 }
