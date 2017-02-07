@@ -27,6 +27,7 @@ public class RegularFileDialog extends JDialog implements ActionListener {
 	 */
 	public RegularFileDialog(regular_file file) {
 		super(null, ModalityType.APPLICATION_MODAL);
+		this.setTitle(file.name());
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());

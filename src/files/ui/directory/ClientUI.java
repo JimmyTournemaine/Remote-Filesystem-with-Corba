@@ -89,7 +89,7 @@ public class ClientUI extends JFrame {
 		btnOpenFile.setName(OPEN_FILE);
 		ctrlPanel.add(btnOpenFile);
 		btnOpenFile.addActionListener(controller);
-		
+
 		JButton btnDelete = new JButton("Delete");
 		btnDelete.setName(DELETE);
 		ctrlPanel.add(btnDelete);
