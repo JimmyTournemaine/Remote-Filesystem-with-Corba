@@ -106,7 +106,7 @@ class AbstractController implements ActionListener {
 	
 	protected void delete() {
 		directory_entry entry = (directory_entry) this.view.getSelectedValue();
-		if (entry == null)
+		if (entry == null || entry == this.model.firstElement()) // first is parent
 			return;
 		try {
 			if(JOptionPane.showConfirmDialog(view, "Are you sure to delete "+entry.name+" ?", null, JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION){

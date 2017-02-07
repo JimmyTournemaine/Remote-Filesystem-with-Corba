@@ -5,7 +5,6 @@
 package files.test;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -358,12 +357,6 @@ public class Test extends TestCase {
 		/* Delete illegal file */
 		try {
 			root.delete_file("../server.log");
-			fail("Delete a file/directory above the root is forbidden.");
-		} catch (access_denied e) {}
-		
-		/* Delete parent file */
-		try {
-			root.delete_file("..");
 			fail("Delete a file/directory above the root is forbidden.");
 		} catch (access_denied e) {}
 	}
