@@ -44,7 +44,7 @@ public class directoryImpl extends directoryPOA {
 			throws files.no_such_file, files.invalid_type_file, files.io, access_denied {
 			
 		File f = new File(file, name);
-		if(isAboveRoot(f)) throw new files.access_denied();
+		if(!accessGranted(f)) throw new files.access_denied();
 		if(!f.exists()) throw new files.no_such_file();
 		if(!f.isFile()) throw new files.invalid_type_file();
 		
@@ -60,7 +60,7 @@ public class directoryImpl extends directoryPOA {
 			throws files.no_such_file, files.invalid_type_file, files.access_denied {
 
 		File f = new File(file, name);
-		if(isAboveRoot(f)) throw new files.access_denied();
+		if(!accessGranted(f)) throw new files.access_denied();
 		if(!f.exists()) throw new files.no_such_file();
 		if(!f.isDirectory()) throw new files.invalid_type_file();
 		try {
@@ -73,7 +73,7 @@ public class directoryImpl extends directoryPOA {
 	@Override
 	public void create_regular_file(files.regular_fileHolder r, java.lang.String name) throws files.already_exist, files.io, access_denied {
 		File f = new File(file, name);
-		if(isAboveRoot(f)) throw new files.access_denied();
+		if(!accessGranted(f)) throw new files.access_denied();
 		if(f.exists()) throw new files.already_exist();
 		try {
 		    f.createNewFile();
@@ -87,7 +87,7 @@ public class directoryImpl extends directoryPOA {
 	@Override
 	public void create_directory(files.directoryHolder r, java.lang.String name) throws files.already_exist, files.io, access_denied {
 		File f = new File(file, name);
-		if(isAboveRoot(f)) throw new files.access_denied();
+		if(!accessGranted(f)) throw new files.access_denied();
 		if(f.exists()) throw new files.already_exist(name+" already exists.");
 		if(f.mkdir() == false) throw new files.io();
 		
@@ -105,7 +105,7 @@ public class directoryImpl extends directoryPOA {
 	@Override
 	public void delete_file(java.lang.String name) throws files.no_such_file, access_denied {
 		File f = new File(file, name);
-		if(isAboveRoot(f)) throw new files.access_denied();
+		if(!accessGranted(f)) throw new files.access_denied();
 		if(!f.exists()) throw new files.no_such_file(name);
 		if(f.isFile()) f.delete();
 		if(f.isDirectory()) this.delete_file(f);
@@ -168,13 +168,13 @@ public class directoryImpl extends directoryPOA {
 		return new File("root");
 	}
 	
-	private boolean isAboveRoot(File f) {
+	private boolean accessGranted(File f) {
 		try {
 			if(!f.getCanonicalPath().contains(getRoot().getAbsolutePath()))
-				return true;
+				return false;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return false;
+		return true;
 	}
 }
