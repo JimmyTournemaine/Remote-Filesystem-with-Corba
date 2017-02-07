@@ -53,7 +53,7 @@ public class Test extends TestCase {
 		}
 	}
 
-	public void testCreation() throws already_exist, io {
+	public void testCreation() throws already_exist, io, access_denied {
 		directoryHolder f = new directoryHolder();
 		regular_fileHolder r = new regular_fileHolder();
 		directory toto;
@@ -330,9 +330,34 @@ public class Test extends TestCase {
 	}
 	
 	public void testAccessDenied() throws Exception {
+		/* Open illegal directory */
 		try {
-			root.open_directory(new directoryHolder(), "..");
-			fail();
+			root.open_directory(new directoryHolder(), "../src");
+			fail("Open a directory above the root is forbidden.");
+		} catch (access_denied e) {}
+		
+		/* Open illegal file */
+		try {
+			root.open_regular_file(new regular_fileHolder(), "../build.xml", mode.read_write);
+			fail("Open a file above the root is forbidden.");
+		} catch (access_denied e) {}
+		
+		/* Create illegal directory */
+		try {
+			root.create_directory(new directoryHolder(), "../toto");
+			fail("Create a directory above the root is forbidden.");
+		} catch (access_denied e) {}
+		
+		/* Create illegal file */
+		try {
+			root.create_regular_file(new regular_fileHolder(), "../a");
+			fail("Create a file above the root is forbidden.");
+		} catch (access_denied e) {}
+		
+		/* Delete illegal file */
+		try {
+			root.delete_file("../server.log");
+			fail("Delete a file/directory above the root is forbidden.");
 		} catch (access_denied e) {}
 	}
 }

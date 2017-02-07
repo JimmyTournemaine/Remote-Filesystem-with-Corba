@@ -9,6 +9,7 @@ import javax.swing.JPopupMenu;
 
 import files.directory_entry;
 import files.file_type;
+import files.ui.directory.ClientUI;
 import files.ui.directory.FilesListModel;
 import files.ui.directory.FilesListView;
 
@@ -30,14 +31,21 @@ public class MenuController extends AbstractController implements MouseListener 
 
 	private void addDefaultMenu(JPopupMenu menu) {
 		JMenuItem newDir = new JMenuItem("New directory");
-		newDir.setName(NEW_DIRECTORY);
+		newDir.setName(ClientUI.NEW_DIRECTORY);
 		newDir.addActionListener(this);
 		menu.add(newDir);
 
 		JMenuItem newFile = new JMenuItem("New file");
-		newFile.setName(NEW_FILE);
+		newFile.setName(ClientUI.NEW_FILE);
 		newFile.addActionListener(this);
 		menu.add(newFile);
+	}
+	
+	private void addDeleteMenu(JPopupMenu menu) {
+		JMenuItem newDir = new JMenuItem("Delete");
+		newDir.setName(ClientUI.DELETE);
+		newDir.addActionListener(this);
+		menu.add(newDir);
 	}
 
 	private void initDefaultMenu() {
@@ -48,12 +56,17 @@ public class MenuController extends AbstractController implements MouseListener 
 	private void initFileMenu() {
 		fileMenu = new JPopupMenu();
 		addDefaultMenu(fileMenu);
+		
 		fileMenu.addSeparator();
 
 		JMenuItem open = new JMenuItem("Open");
-		open.setName(OPEN_FILE);
+		open.setName(ClientUI.OPEN_FILE);
 		open.addActionListener(this);
 		fileMenu.add(open);
+		
+		fileMenu.addSeparator();
+		
+		addDeleteMenu(fileMenu);
 	}
 
 	private void initDirectoryMenu() {
@@ -62,9 +75,13 @@ public class MenuController extends AbstractController implements MouseListener 
 		directoryMenu.addSeparator();
 
 		JMenuItem open = new JMenuItem("Go into");
-		open.setName(OPEN_DIRECTORY);
+		open.setName(ClientUI.OPEN_DIRECTORY);
 		open.addActionListener(this);
 		directoryMenu.add(open);
+		
+		directoryMenu.addSeparator();
+		
+		addDeleteMenu(directoryMenu);
 	}
 
 	@Override

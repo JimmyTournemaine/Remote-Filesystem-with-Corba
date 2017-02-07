@@ -24,6 +24,12 @@ public class ClientUI extends JFrame {
 
 	private static final long serialVersionUID = 4368635630731592525L;
 	private JPanel contentPane;
+	
+	public static final String NEW_DIRECTORY = "new_directory";
+	public static final String NEW_FILE = "new_file";
+	public static final String OPEN_DIRECTORY = "open_directory";
+	public static final String OPEN_FILE = "open_file";
+	public static final String DELETE = "delete";
 
 	/**
 	 * Launch the application.
@@ -48,7 +54,7 @@ public class ClientUI extends JFrame {
 	public ClientUI() {
 		directory root = init();
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 512, 300);
+		setBounds(100, 100, 593, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -65,24 +71,29 @@ public class ClientUI extends JFrame {
 		contentPane.add(ctrlPanel, BorderLayout.NORTH);
 		
 		JButton btnNewDirectory = new JButton("New Directory");
-		btnNewDirectory.setName("new_directory");
+		btnNewDirectory.setName(NEW_DIRECTORY);
 		ctrlPanel.add(btnNewDirectory);
 		btnNewDirectory.addActionListener(controller);
 		
 		JButton btnNewFile = new JButton("New File");
-		btnNewFile.setName("new_file");
+		btnNewFile.setName(NEW_FILE);
 		ctrlPanel.add(btnNewFile);
 		btnNewFile.addActionListener(controller);
 		
 		JButton btnOpenDirectory = new JButton("Open Directory");
-		btnOpenDirectory.setName("open_directory");
+		btnOpenDirectory.setName(OPEN_DIRECTORY);
 		ctrlPanel.add(btnOpenDirectory);
 		btnOpenDirectory.addActionListener(controller);
 		
 		JButton btnOpenFile = new JButton("Open File");
-		btnOpenFile.setName("open_file");
+		btnOpenFile.setName(OPEN_FILE);
 		ctrlPanel.add(btnOpenFile);
 		btnOpenFile.addActionListener(controller);
+		
+		JButton btnDelete = new JButton("Delete");
+		btnDelete.setName(DELETE);
+		ctrlPanel.add(btnDelete);
+		btnDelete.addActionListener(controller);
 	}
 	
 	private directory init() {

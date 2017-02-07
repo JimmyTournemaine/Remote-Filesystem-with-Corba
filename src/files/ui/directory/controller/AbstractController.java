@@ -15,6 +15,7 @@ import files.io;
 import files.mode;
 import files.no_such_file;
 import files.regular_fileHolder;
+import files.ui.directory.ClientUI;
 import files.ui.directory.FilesListModel;
 import files.ui.directory.FilesListView;
 import files.ui.regular.RegularFileDialog;
@@ -23,11 +24,6 @@ class AbstractController implements ActionListener {
 
 	protected FilesListModel model;
 	protected FilesListView view;
-
-	protected static final String NEW_DIRECTORY = "new_directory";
-	protected static final String NEW_FILE = "new_file";
-	protected static final String OPEN_DIRECTORY = "open_directory";
-	protected static final String OPEN_FILE = "open_file";
 
 	AbstractController(FilesListModel model, FilesListView view) {
 		this.model = model;
@@ -69,6 +65,8 @@ class AbstractController implements ActionListener {
 			showErrorMessage(e1, entry.name + " does not exist.");
 		} catch (invalid_type_file e1) {
 			showErrorMessage(e1, entry.name + " is not a regular file.");
+		} catch (access_denied e1) {
+			showErrorMessage(e1, entry.name+" : access denied.");
 		} catch (io e1) {
 			e1.printStackTrace();
 		}
@@ -85,6 +83,8 @@ class AbstractController implements ActionListener {
 			JOptionPane.showMessageDialog(view, "The name " + name + " is already used.");
 		} catch (io e1) {
 			e1.printStackTrace();
+		} catch(access_denied e1) {
+			showErrorMessage(e1, "Cannot create "+name+" directory : access denied.");
 		}
 	}
 
@@ -98,6 +98,22 @@ class AbstractController implements ActionListener {
 		} catch (already_exist e1) {
 			JOptionPane.showMessageDialog(view, "The name " + name + " is already used.");
 		} catch (io e1) {
+			e1.printStackTrace();
+		} catch(access_denied e1) {
+			showErrorMessage(e1, "Cannot create file "+name+" : access denied.");
+		}
+	}
+	
+	protected void delete() {
+		directory_entry entry = (directory_entry) this.view.getSelectedValue();
+		if (entry == null)
+			return;
+		try {
+			if(JOptionPane.showConfirmDialog(view, "Are you sure to delete "+entry.name+" ?", null, JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION){
+				this.model.getCurrent().delete_file(entry.name);
+				this.model.refresh();
+			}
+		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
 	}
@@ -131,14 +147,16 @@ class AbstractController implements ActionListener {
 			return;
 		}
 
-		if (source.getName().equals(NEW_DIRECTORY)) {
+		if (source.getName().equals(ClientUI.NEW_DIRECTORY)) {
 			newDirectory();
-		} else if (source.getName().equals(NEW_FILE)) {
+		} else if (source.getName().equals(ClientUI.NEW_FILE)) {
 			newFile();
-		} else if (source.getName().equals(OPEN_DIRECTORY)) {
+		} else if (source.getName().equals(ClientUI.OPEN_DIRECTORY)) {
 			openDirectory();
-		} else if (source.getName().equals(OPEN_FILE)) {
+		} else if (source.getName().equals(ClientUI.OPEN_FILE)) {
 			openFile();
+		} else if (source.getName().equals(ClientUI.DELETE)) {
+			delete();
 		}
 	}
 }

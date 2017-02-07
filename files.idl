@@ -46,18 +46,18 @@ module files {
     readonly attribute long number_of_file;
 
     void open_regular_file(inout regular_file r, in string name, in mode m) 
-        raises (invalid_type_file, no_such_file, io);
+        raises (invalid_type_file, no_such_file, io, access_denied);
 
     void open_directory(inout directory f, in string name)
         raises (invalid_type_file, no_such_file, access_denied);
 
     void create_regular_file(inout regular_file r, in string name)
-        raises (already_exist, io);
+        raises (already_exist, io, access_denied);
     void create_directory(inout directory f, in string name)
-        raises (already_exist, io);
+        raises (already_exist, io, access_denied);
 
     void delete_file(in string name)
-        raises (no_such_file);
+        raises (no_such_file, access_denied);
 
     long list_files(inout file_list l);
     
