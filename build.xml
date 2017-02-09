@@ -19,6 +19,7 @@
 	<property name="generated.dir" value="generated" />
 	<property name="version" value="1.0.0" />
 	<property name="jar" value="RemoteFilsystem.jar" />
+	<property name="doc.dir" value="doc" />
 
 	<description>
     	Remote Filesystem with CORBA implements a driver for your server filesystem.
@@ -75,5 +76,22 @@
 				</exec>
 			</sequential>
 		</parallel>
+	</target>
+
+	<target name="doc" description="generate documentation">
+		<mkdir dir="${doc.dir}" />
+		<javadoc sourcepath="${src.dir}" destdir="${doc.dir}" charset="utf-8">
+			<fileset dir="${src.dir}">
+				<include name="**/*.java" />
+			</fileset>
+			<doctitle>Remote Filesystem with CORBA</doctitle>
+			<header>2017 @ Jimmy Tournemaine &amp; Pierre Siguret</header>
+			<bottom>
+				This document is the documentation of a project proposed by Mr Frank Singhoff.
+				The project is designed and developped by Jimmy Tournemaine and Pierre Siguret 
+				as part of the teaching unit "system objects distributed"
+				at the University of Western Brittany.
+			</bottom>
+		</javadoc>
 	</target>
 </project>
