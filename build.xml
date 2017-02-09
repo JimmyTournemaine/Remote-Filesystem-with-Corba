@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
 <!-- ====================================================================== 
      1 fev. 2017                                                        
 
@@ -25,19 +26,17 @@
 
 	<target name="clean" description="clean workspace">
 		<delete dir="${obj.dir}" />
-		<delete dir="generated" />
+		<delete dir="${generated.dir}" />
 		<delete dir="root" />
 		<delete>
 			<fileset dir=".">
 				<include name="*.ref" />
 			</fileset>
 		</delete>
-		<mkdir dir="${obj.dir}" />
-		<mkdir dir="${generated.dir}" />
 	</target>
 
 	<target name="generate" description="generate files">
-		<mkdir dir="root" />
+		<mkdir dir="${generated.dir}" />
 		<exec executable="idl">
 			<arg line="-d ${generated.dir}" />
 			<arg value="files.idl" />
@@ -49,6 +48,8 @@
 	</target>
 
 	<target name="compile" depends="clean,generate" description="compilation">
+		<mkdir dir="root" />
+		<mkdir dir="${obj.dir}" />
 		<javac srcdir="${generated.dir}" destdir="${obj.dir}" />
 		<javac srcdir="${src.dir}" destdir="${obj.dir}" />
 	</target>
