@@ -1,6 +1,7 @@
-/*
- * Created on 2 fev. 2017 under the authority of Franck Singhoff 
- * as part of practical work at the University of Western Brittany
+/**
+ * Created on February 2nd, 2017 for a project proposed by Mr Frank Singhoff 
+ * as part of the teaching unit system objects distributed 
+ * at the University of Western Brittany.
  */
 package admin;
 
@@ -11,6 +12,9 @@ import java.io.InputStreamReader;
 
 import org.omg.CORBA.ORB;
 
+/**
+ * An admin client able to shutdown {@link files.Serveur}
+ */
 public class ShutdownClient {
 
 	public ShutdownClient() {

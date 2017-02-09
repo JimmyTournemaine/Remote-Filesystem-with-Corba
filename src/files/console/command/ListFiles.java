@@ -1,3 +1,8 @@
+/**
+ * Created on February 1st, 2017 for a project proposed by Mr Frank Singhoff 
+ * as part of the teaching unit system objects distributed 
+ * at the University of Western Brittany.
+ */
 package files.console.command;
 
 import files.directory;
@@ -6,6 +11,9 @@ import files.directory_entryHolder;
 import files.file_listHolder;
 import files.file_type;
 
+/**
+ * A command to list files in the current directory
+ */
 public class ListFiles extends FolderCommand {
 
 	public static final String ANSI_RESET = "\u001B[0m";

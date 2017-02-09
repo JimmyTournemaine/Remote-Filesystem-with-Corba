@@ -1,8 +1,16 @@
+/**
+ * Created on February 1st, 2017 for a project proposed by Mr Frank Singhoff 
+ * as part of the teaching unit system objects distributed 
+ * at the University of Western Brittany.
+ */
 package files.console.command;
 
 import files.directory;
 import files.directoryHolder;
 
+/**
+ * A command to open a directory
+ */
 public class OpenDirectory extends FolderCommand {
 
 	private directory root;

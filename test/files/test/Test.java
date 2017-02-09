@@ -1,6 +1,7 @@
-/*
- * Created on 25 jan. 2017 under the authority of Franck Singhoff 
- * as part of practical work at the University of Western Brittany
+/**
+ * Created on January 25th, 2017 for a project proposed by Mr Frank Singhoff 
+ * as part of the teaching unit system objects distributed 
+ * at the University of Western Brittany.
  */
 package files.test;
 
@@ -16,6 +17,8 @@ import files.*;
 import junit.framework.TestCase;
 
 /**
+ * Test the integrity of the files package.
+ * 
  * This test case must be executed in a clean environment. Be sure that the root
  * folder exists and is empty before running this test.
  */
@@ -195,27 +198,16 @@ public class Test extends TestCase {
 		a.close();
 		try {
 			a.read(3, new StringHolder(""));
-			fail("An invalid_operation exception should be thrown.");
-		} catch(invalid_operation e) {}
+			fail("An io exception should be thrown.");
+		} catch(io e) {}
 		try {
 			a.write(3, "abc");
-			fail("An invalid_operation exception should be thrown.");
-		} catch(invalid_operation e) {}
+			fail("An io exception should be thrown.");
+		} catch(io e) {}
 		try {
 			a.seek(3);
-			fail("An invalid_operation exception should be thrown.");
-		} catch(invalid_operation e) {}
-	}
-
-	public void testZeroTerminatedByte() throws Exception {
-		StringHolder sh = new StringHolder("");
-		regular_fileHolder f = new regular_fileHolder();
-		root.open_regular_file(f, "a", mode.read_only);
-		regular_file a = f.value;
-
-		/* Zero-terminated byte */
-		assertEquals(36, a.read(50, sh));
-		assertEquals("I'm writing in a. I append some text", sh.value);
+			fail("An io exception should be thrown.");
+		} catch(io e) {}
 	}
 
 	public void testReadOnlyMode() throws Exception {
@@ -240,6 +232,17 @@ public class Test extends TestCase {
 		a.close();
 	}
 	
+	public void testZeroTerminatedByte() throws Exception {
+		StringHolder sh = new StringHolder("");
+		regular_fileHolder f = new regular_fileHolder();
+		root.open_regular_file(f, "a", mode.read_only);
+		regular_file a = f.value;
+
+		/* Zero-terminated bytes must be deleted */
+		assertEquals(36, a.read(50, sh));
+		assertEquals("I'm writing in a. I append some text", sh.value);
+	}
+	
 	public void testWriteAppendMode() throws Exception {
 		regular_fileHolder f = new regular_fileHolder();
 		root.open_regular_file(f, "a", mode.write_append);
@@ -258,10 +261,10 @@ public class Test extends TestCase {
 			fail("Should not read in write_append mode.");
 		} catch(files.invalid_operation e){}
 		
-		/* Seek forbidden : only append */
+		/* Seek forbidden */
 		try {
 			a.seek(0);
-			fail("Should throw an invalid_operation expected.");
+			fail("An invalid_operation is expected.");
 		} catch (files.invalid_operation e) {}
 		
 		/* Close */
@@ -299,6 +302,19 @@ public class Test extends TestCase {
 		a = f.value;
 		a.read(message.length()+36, sh); // +36 to check that previous text has been erased.
 		assertEquals("I'm truncating the file.", sh.value);
+	}
+	
+	public void testWriteTooMuch() throws Exception {
+		regular_fileHolder f = new regular_fileHolder();
+		root.open_regular_file(f, "a", mode.write_trunc);
+		regular_file a = f.value;
+
+		/* Writing */
+		String message = "I'm writing a message";
+		try {
+			a.write(message.length()+50, message);
+			fail("Sould not write more characters that the data length");
+		} catch(io e) {}
 	}
 	
 	public void testDelete() throws Exception 

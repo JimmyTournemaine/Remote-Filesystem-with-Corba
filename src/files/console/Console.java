@@ -1,6 +1,7 @@
-/*
- * Created on 31 jan. 2017 under the authority of Franck Singhoff 
- * as part of practical work at the University of Western Brittany
+/**
+ * Created on February 1st, 2017 for a project proposed by Mr Frank Singhoff 
+ * as part of the teaching unit system objects distributed 
+ * at the University of Western Brittany.
  */
 package files.console;
 
@@ -13,6 +14,9 @@ import org.omg.CORBA.ORB;
 import files.*;
 import files.console.command.*;
 
+/**
+ * The console client of {@link files.Serveur}
+ */
 public class Console {
 
 	public Console() {
@@ -53,6 +57,10 @@ public class Console {
 		folderLoop(root);
 	}
 	
+	/**
+	 * The loop for directories
+	 * @param root The root of the remote file system
+	 */
 	private static void folderLoop(directory root) {
 		
 		String line, args[];
@@ -105,6 +113,10 @@ public class Console {
 		} while(!line.equals("exit"));
 	}
 	
+	/**
+	 * The loop for directories
+	 * @param root The root of the remote file system
+	 */
 	private static void regular_fileLoop(regular_file file) {
 		String line, args[];
 		

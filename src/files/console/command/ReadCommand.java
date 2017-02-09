@@ -1,3 +1,8 @@
+/**
+ * Created on February 1st, 2017 for a project proposed by Mr Frank Singhoff 
+ * as part of the teaching unit system objects distributed 
+ * at the University of Western Brittany.
+ */
 package files.console.command;
 
 import org.omg.CORBA.StringHolder;
@@ -6,6 +11,9 @@ import files.end_of_file;
 import files.invalid_operation;
 import files.regular_file;
 
+/**
+ * A command read some characters in a file
+ */
 public class ReadCommand extends FileCommand {
 
 	public ReadCommand(regular_file file) {

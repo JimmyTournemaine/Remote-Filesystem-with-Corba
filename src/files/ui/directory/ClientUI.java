@@ -1,3 +1,8 @@
+/**
+ * Created on February 6th, 2017 for a project proposed by Mr Frank Singhoff 
+ * as part of the teaching unit system objects distributed 
+ * at the University of Western Brittany.
+ */
 package files.ui.directory;
 
 import java.awt.BorderLayout;
@@ -20,6 +25,9 @@ import files.ui.directory.controller.MenuController;
 
 import javax.swing.JButton;
 
+/**
+ * The GUI client of {@link files.Serveur}
+ */
 public class ClientUI extends JFrame {
 
 	private static final long serialVersionUID = 4368635630731592525L;
@@ -96,6 +104,9 @@ public class ClientUI extends JFrame {
 		btnDelete.addActionListener(controller);
 	}
 	
+	/**
+	 * Initialize the client and get the root representation of the remote file system.
+	 */
 	private directory init() {
 		ORB orb = ORB.init(new String[0], null);
 		String ior = null;

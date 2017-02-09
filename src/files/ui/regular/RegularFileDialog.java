@@ -1,3 +1,8 @@
+/**
+ * Created on February 6th, 2017 for a project proposed by Mr Frank Singhoff 
+ * as part of the teaching unit system objects distributed 
+ * at the University of Western Brittany.
+ */
 package files.ui.regular;
 
 import java.awt.BorderLayout;
@@ -10,10 +15,17 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import files.regular_file;
+import files.access_denied;
+import files.directory;
+import files.invalid_type_file;
+import files.io;
+import files.no_such_file;
 
 import javax.swing.JTextPane;
 
+/**
+ * A dialog to edit a file contents.
+ */
 public class RegularFileDialog extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = 88307160972817987L;
@@ -24,10 +36,15 @@ public class RegularFileDialog extends JDialog implements ActionListener {
 
 	/**
 	 * Create the dialog.
+	 * 
+	 * @throws io If any sort of I/O problem occurred.
+	 * @throws invalid_type_file If the name does not corresponding to a file.
+	 * @throws access_denied The file is above the root of the file system.
+	 * @throws no_such_file Any filename of this name exists.
 	 */
-	public RegularFileDialog(regular_file file) {
+	public RegularFileDialog(directory current, String name) throws no_such_file, access_denied, invalid_type_file, io {
 		super(null, ModalityType.APPLICATION_MODAL);
-		this.setTitle(file.name());
+		this.setTitle(name);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());
@@ -51,7 +68,7 @@ public class RegularFileDialog extends JDialog implements ActionListener {
 		cancelButton.addActionListener(this);
 		buttonPane.add(cancelButton);	
 		
-		om = new RegularFileManager(file);
+		om = new RegularFileManager(current, name);
 		textPane.setText(om.readAll());
 		
 		setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -61,7 +78,11 @@ public class RegularFileDialog extends JDialog implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		if(((JButton) arg0.getSource()) == okButton) {
-			om.writeAll(textPane.getText());
+			try {
+				om.writeAll(textPane.getText());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 		dispose();
 	}

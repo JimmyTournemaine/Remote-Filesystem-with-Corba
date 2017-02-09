@@ -1,16 +1,18 @@
-/*
- * Created on 25 jan. 2017 under the authority of Franck Singhoff 
- * as part of practical work at the University of Western Brittany
+/**
+ * Created on January 28th, 2017 for a project proposed by Mr Frank Singhoff 
+ * as part of the teaching unit system objects distributed 
+ * at the University of Western Brittany.
  */
 package files;
 
 import org.omg.CORBA.*;
 import org.omg.PortableServer.*;
-
 import admin.server_handlerImpl;
+import java.io.*;
 
-import java.io.*;	
-
+/**
+ * The server which handle the remote file system.
+ */
 public class Serveur {
 	public static void main(String[] args) throws IOException {
 
@@ -21,7 +23,7 @@ public class Serveur {
 
 			directoryImpl directoryimpl = new directoryImpl(poa);
 			org.omg.CORBA.Object alloc = poa.servant_to_reference(directoryimpl);
-			
+
 			server_handlerImpl handlerImpl = new server_handlerImpl(orb);
 			org.omg.CORBA.Object obj = poa.servant_to_reference(handlerImpl);
 
@@ -38,7 +40,7 @@ public class Serveur {
 			}
 
 			System.out.println("Server is ready.");
-			
+
 			orb.run();
 
 			System.exit(0);

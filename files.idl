@@ -12,13 +12,13 @@ module files {
   interface regular_file {
 
     long read(in long size, inout string data)
-        raises (end_of_file,invalid_operation);
+        raises (end_of_file,invalid_operation, io);
 
     long write(in long size, in string data)
-        raises (invalid_operation);
+        raises (invalid_operation, io);
 
     void seek(in long new_offset)
-        raises (invalid_offset,invalid_operation);
+        raises (invalid_offset,invalid_operation, io);
 
     void close();
     
@@ -49,7 +49,7 @@ module files {
         raises (invalid_type_file, no_such_file, io, access_denied);
 
     void open_directory(inout directory f, in string name)
-        raises (invalid_type_file, no_such_file, access_denied);
+        raises (invalid_type_file, no_such_file, io, access_denied);
 
     void create_regular_file(inout regular_file r, in string name)
         raises (already_exist, io, access_denied);

@@ -1,3 +1,8 @@
+/**
+ * Created on February 6th, 2017 for a project proposed by Mr Frank Singhoff 
+ * as part of the teaching unit system objects distributed 
+ * at the University of Western Brittany.
+ */
 package files.ui.directory.controller;
 
 import java.awt.event.ActionEvent;
@@ -12,7 +17,6 @@ import files.directoryHolder;
 import files.directory_entry;
 import files.invalid_type_file;
 import files.io;
-import files.mode;
 import files.no_such_file;
 import files.regular_fileHolder;
 import files.ui.directory.ClientUI;
@@ -20,6 +24,9 @@ import files.ui.directory.FilesListModel;
 import files.ui.directory.FilesListView;
 import files.ui.regular.RegularFileDialog;
 
+/**
+ * A controller of the file list.
+ */
 class AbstractController implements ActionListener {
 
 	protected FilesListModel model;
@@ -47,6 +54,8 @@ class AbstractController implements ActionListener {
 			showErrorMessage(e1, entry.name + " is not a regular file.");
 		} catch (access_denied e1) {
 			showErrorMessage(e1, "Cannot open directory : access denied.");
+		} catch (io e) {
+			showErrorMessage(e, "An internal server error occurred.");
 		}
 	}
 
@@ -54,13 +63,11 @@ class AbstractController implements ActionListener {
 	 * Open the selected file
 	 */
 	protected void openFile() {
-		regular_fileHolder fileHolder = new regular_fileHolder();
 		directory_entry entry = (directory_entry) this.view.getSelectedValue();
 		if (entry == null)
 			return;
 		try {
-			this.model.getCurrent().open_regular_file(fileHolder, entry.name, mode.read_write);
-			new RegularFileDialog(fileHolder.value);
+			new RegularFileDialog(this.model.getCurrent(), entry.name);
 		} catch (no_such_file e1) {
 			showErrorMessage(e1, entry.name + " does not exist.");
 		} catch (invalid_type_file e1) {
@@ -72,6 +79,9 @@ class AbstractController implements ActionListener {
 		}
 	}
 
+	/**
+	 * Create a new directory
+	 */
 	protected void newDirectory() {
 		String name = JOptionPane.showInputDialog("Enter the name of the new directory :");
 		if (name == null || name.equals(""))
@@ -88,6 +98,9 @@ class AbstractController implements ActionListener {
 		}
 	}
 
+	/**
+	 * Create a new file
+	 */
 	protected void newFile() {
 		String name = JOptionPane.showInputDialog("Enter the name of the new directory :");
 		if (name == null)
@@ -104,6 +117,9 @@ class AbstractController implements ActionListener {
 		}
 	}
 	
+	/**
+	 * Delete the selected file
+	 */
 	protected void delete() {
 		directory_entry entry = (directory_entry) this.view.getSelectedValue();
 		if (entry == null || entry == this.model.firstElement()) // first is parent

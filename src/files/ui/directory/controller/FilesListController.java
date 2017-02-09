@@ -1,3 +1,8 @@
+/**
+ * Created on February 6th, 2017 for a project proposed by Mr Frank Singhoff 
+ * as part of the teaching unit system objects distributed 
+ * at the University of Western Brittany.
+ */
 package files.ui.directory.controller;
 
 import files.directory_entry;
@@ -5,11 +10,13 @@ import files.file_type;
 import files.ui.directory.FilesListModel;
 import files.ui.directory.FilesListView;
 
-import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class FilesListController extends AbstractController implements ActionListener, MouseListener {
+/**
+ * The controller for the file-list on mouse events
+ */
+public class FilesListController extends AbstractController implements MouseListener {
 
 	public FilesListController(FilesListModel model, FilesListView list) {
 		super(model, list);
@@ -17,9 +24,6 @@ public class FilesListController extends AbstractController implements ActionLis
 		this.view.addMouseListener(this);
 	}
 
-	/**
-	 * Open file or directory on double click
-	 */
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 

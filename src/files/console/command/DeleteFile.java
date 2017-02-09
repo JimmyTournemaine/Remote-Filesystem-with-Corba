@@ -1,7 +1,15 @@
+/**
+ * Created on February 1st, 2017 for a project proposed by Mr Frank Singhoff 
+ * as part of the teaching unit system objects distributed 
+ * at the University of Western Brittany.
+ */
 package files.console.command;
 
 import files.directory;
 
+/**
+ * A command to delete a file in the given directory
+ */
 public class DeleteFile extends FolderCommand {
 
 	public DeleteFile(directory current) {

@@ -1,3 +1,8 @@
+/**
+ * Created on February 6th, 2017 for a project proposed by Mr Frank Singhoff 
+ * as part of the teaching unit system objects distributed 
+ * at the University of Western Brittany.
+ */
 package files.ui.directory.controller;
 
 import java.awt.Point;
@@ -13,6 +18,9 @@ import files.ui.directory.ClientUI;
 import files.ui.directory.FilesListModel;
 import files.ui.directory.FilesListView;
 
+/**
+ * The controller for the popup menus.
+ */
 public class MenuController extends AbstractController implements MouseListener {
 
 	private JPopupMenu defaultMenu;
@@ -29,6 +37,10 @@ public class MenuController extends AbstractController implements MouseListener 
 		initDirectoryMenu();
 	}
 
+	/**
+	 * Add the default menu to any menu.
+	 * @param menu The menu on which to add the item.
+	 */
 	private void addDefaultMenu(JPopupMenu menu) {
 		JMenuItem newDir = new JMenuItem("New directory");
 		newDir.setName(ClientUI.NEW_DIRECTORY);
@@ -41,6 +53,10 @@ public class MenuController extends AbstractController implements MouseListener 
 		menu.add(newFile);
 	}
 	
+	/**
+	 * Add a delete item to a menu.
+	 * @param menu The menu on which to add the item.
+	 */
 	private void addDeleteMenu(JPopupMenu menu) {
 		JMenuItem newDir = new JMenuItem("Delete");
 		newDir.setName(ClientUI.DELETE);
@@ -48,11 +64,17 @@ public class MenuController extends AbstractController implements MouseListener 
 		menu.add(newDir);
 	}
 
+	/**
+	 * Initialize the default menu (no selection)
+	 */
 	private void initDefaultMenu() {
 		defaultMenu = new JPopupMenu();
 		addDefaultMenu(defaultMenu);
 	}
 
+	/**
+	 * Initialize the file menu
+	 */
 	private void initFileMenu() {
 		fileMenu = new JPopupMenu();
 		addDefaultMenu(fileMenu);
@@ -69,6 +91,9 @@ public class MenuController extends AbstractController implements MouseListener 
 		addDeleteMenu(fileMenu);
 	}
 
+	/**
+	 * Initialize the directory menu
+	 */
 	private void initDirectoryMenu() {
 		directoryMenu = new JPopupMenu();
 		addDefaultMenu(directoryMenu);
@@ -98,6 +123,10 @@ public class MenuController extends AbstractController implements MouseListener 
 	public void mouseClicked(MouseEvent arg0) {
 	}
 
+	/**
+	 * Show the menu corresponding to the selection
+	 * @param arg0 The mouse event.
+	 */
 	private void showPopupMenu(MouseEvent arg0) {
 		if (arg0.isPopupTrigger()) {
 			directory_entry entry = (directory_entry) view.getSelectedValue();

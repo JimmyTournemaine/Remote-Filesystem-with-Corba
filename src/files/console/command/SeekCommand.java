@@ -1,9 +1,17 @@
+/**
+ * Created on February 1st, 2017 for a project proposed by Mr Frank Singhoff 
+ * as part of the teaching unit system objects distributed 
+ * at the University of Western Brittany.
+ */
 package files.console.command;
 
 import files.invalid_offset;
 import files.invalid_operation;
 import files.regular_file;
 
+/**
+ * A command to set the file-pointer offset of the given file.
+ */
 public class SeekCommand extends FileCommand {
 
 	public SeekCommand(regular_file file) {
