@@ -32,11 +32,11 @@
 				<include name="*.ref" />
 			</fileset>
 		</delete>
-	</target>
-
-	<target name="compile" depends="clean" description="compilation">
 		<mkdir dir="${obj.dir}" />
 		<mkdir dir="${generated.dir}" />
+	</target>
+
+	<target name="generate" description="generate files">
 		<mkdir dir="root" />
 		<exec executable="idl">
 			<arg line="-d ${generated.dir}" />
@@ -46,6 +46,9 @@
 			<arg line="-d ${generated.dir}" />
 			<arg value="admin.idl" />
 		</exec>
+	</target>
+
+	<target name="compile" depends="clean,generate" description="compilation">
 		<javac srcdir="${generated.dir}" destdir="${obj.dir}" />
 		<javac srcdir="${src.dir}" destdir="${obj.dir}" />
 	</target>
