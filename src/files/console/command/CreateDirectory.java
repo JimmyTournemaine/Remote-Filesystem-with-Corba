@@ -8,7 +8,9 @@ import files.directory;
 import files.directoryHolder;
 
 /**
- * A command to create a new empty directory
+ * A command to create a new empty directory.
+ *
+ * @author Jimmy Tournemaine
  */
 public class CreateDirectory extends FolderCommand {
 

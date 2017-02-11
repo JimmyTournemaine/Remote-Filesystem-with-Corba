@@ -8,6 +8,8 @@ import files.directory;
 
 /**
  * A command to delete a file in the given directory
+ *
+ * @author Jimmy Tournemaine
  */
 public class DeleteFile extends FolderCommand {
 

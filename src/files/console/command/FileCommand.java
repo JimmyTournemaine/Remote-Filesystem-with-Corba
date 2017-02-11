@@ -8,6 +8,8 @@ import files.regular_file;
 
 /**
  * Represents a command for a regular file.
+ *
+ * @author Jimmy Tournemaine
  */
 public abstract class FileCommand implements Command {
 

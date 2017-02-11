@@ -17,8 +17,6 @@
 	<property name="test.dir" value="test" />
 	<property name="obj.dir" value="classes" />
 	<property name="generated.dir" value="generated" />
-	<property name="version" value="1.0.0" />
-	<property name="jar" value="RemoteFilsystem.jar" />
 	<property name="doc.dir" value="doc" />
 
 	<description>
@@ -28,6 +26,7 @@
 	<target name="clean" description="clean workspace">
 		<delete dir="${obj.dir}" />
 		<delete dir="${generated.dir}" />
+		<delete dir="doc" />
 		<delete dir="root" />
 		<delete>
 			<fileset dir=".">
@@ -78,9 +77,9 @@
 		</parallel>
 	</target>
 
-	<target name="doc" description="generate documentation">
+	<target name="doc" depends="compile" description="generate documentation">
 		<mkdir dir="${doc.dir}" />
-		<javadoc sourcepath="${src.dir}" destdir="${doc.dir}" charset="utf-8">
+		<javadoc author="yes" sourcepath="${src.dir}" destdir="${doc.dir}" charset="utf-8">
 			<fileset dir="${src.dir}">
 				<include name="**/*.java" />
 			</fileset>
@@ -93,5 +92,6 @@
 				at the University of Western Brittany.
 			</bottom>
 		</javadoc>
+		<echo>The documentation has been generated in the ${doc.dir} directory.</echo>
 	</target>
 </project>

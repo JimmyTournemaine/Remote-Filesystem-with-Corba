@@ -10,6 +10,8 @@ import files.regular_file;
 
 /**
  * A command to set the file-pointer offset of the given file.
+ *
+ * @author Jimmy Tournemaine
  */
 public class SeekCommand extends FileCommand {
 

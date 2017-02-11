@@ -25,7 +25,9 @@ import files.console.command.SeekCommand;
 import files.console.command.WriteCommand;
 
 /**
- * The console client of {@link files.Serveur}
+ * The console client of {@link files.Serveur}.
+ *
+ * @author Jimmy Tournemaine
  */
 public class Console {
 

@@ -10,6 +10,8 @@ import org.omg.CORBA.ORB;
 /**
  * Shutdown the server properly. Implements the interface defined by
  * <a href="../../admin.idl">admin.idl</a>
+ *
+ * @author Jimmy Tournemaine
  */
 public class server_handlerImpl extends server_handlerPOA {
 

@@ -22,6 +22,8 @@ import files.no_such_file;
 
 /**
  * A dialog to edit a file contents.
+ *
+ * @author Jimmy Tournemaine
  */
 public class RegularFileDialog extends JDialog implements ActionListener {
 

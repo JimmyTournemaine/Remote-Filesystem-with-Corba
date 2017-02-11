@@ -15,6 +15,8 @@ import files.file_type;
 /**
  * A component that displays a file list
  *
+ * @author Jimmy Tournemaine
+ *
  * @see javax.swing.JList
  */
 public class FilesListView extends JList implements ListCellRenderer {

@@ -23,6 +23,8 @@ import files.ui.regular.RegularFileDialog;
 
 /**
  * A controller of the file list.
+ *
+ * @author Jimmy Tournemaine
  */
 class AbstractController implements ActionListener {
 

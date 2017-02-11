@@ -14,6 +14,9 @@ import admin.server_handlerImpl;
 
 /**
  * The server which handle the remote file system.
+ *
+ * @author Pierre Siguret
+ * @author Jimmy Tournemaine
  */
 public class Serveur {
 

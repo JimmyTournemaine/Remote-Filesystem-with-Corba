@@ -8,7 +8,9 @@ import files.directory;
 import files.directoryHolder;
 
 /**
- * A command to open a directory
+ * A command to open a directory.
+ *
+ * @author Jimmy Tournemaine
  */
 public class OpenDirectory extends FolderCommand {
 

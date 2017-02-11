@@ -6,6 +6,8 @@ package files.console.command;
 
 /**
  * Represents a command that the console client can run.
+ *
+ * @author Jimmy Tournemaine
  */
 public interface Command {
 

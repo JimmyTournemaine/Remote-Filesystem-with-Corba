@@ -17,6 +17,8 @@ import files.regular_fileHolder;
 
 /**
  * Manage a regular file
+ *
+ * @author Jimmy Tournemaine
  */
 public class RegularFileManager {
 

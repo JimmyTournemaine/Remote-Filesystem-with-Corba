@@ -15,6 +15,9 @@ import org.omg.PortableServer.POAPackage.WrongPolicy;
 /**
  * An implementation of the {@link files.directory } interface defined by
  * <a href="../../files.idl">files.idl</a>
+ *
+ * @author Pierre Siguret
+ * @author Jimmy Tournemaine
  */
 public class directoryImpl extends directoryPOA {
 

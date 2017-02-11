@@ -10,7 +10,9 @@ import files.regular_file;
 import files.regular_fileHolder;
 
 /**
- * A command to open a file
+ * A command to open a file.
+ *
+ * @author Jimmy Tournemaine
  */
 public class OpenFile implements Command {
 

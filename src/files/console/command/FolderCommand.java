@@ -7,7 +7,9 @@ package files.console.command;
 import files.directory;
 
 /**
- * A directory command abstraction
+ * A directory command abstraction.
+ *
+ * @author Jimmy Tournemaine
  */
 public abstract class FolderCommand implements Command {
 

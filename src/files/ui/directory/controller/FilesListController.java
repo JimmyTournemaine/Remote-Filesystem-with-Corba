@@ -13,6 +13,8 @@ import files.ui.directory.FilesListView;
 
 /**
  * The controller for the file-list on mouse events
+ *
+ * @author Jimmy Tournemaine
  */
 public class FilesListController extends AbstractController implements MouseListener {
 

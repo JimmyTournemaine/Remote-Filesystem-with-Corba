@@ -10,6 +10,9 @@ import java.util.Iterator;
 /**
  * An implementation of {@link files.file_list } interface defined by
  * <a href="../../files.idl">files.idl</a>
+ *
+ * @author Pierre Siguret
+ * @author Jimmy Tournemaine
  */
 public class file_listImpl extends file_listPOA {
 

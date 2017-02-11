@@ -17,6 +17,8 @@ import files.ui.directory.FilesListView;
 
 /**
  * The controller for the popup menus.
+ *
+ * @author Jimmy Tournemaine
  */
 public class MenuController extends AbstractController implements MouseListener {
 

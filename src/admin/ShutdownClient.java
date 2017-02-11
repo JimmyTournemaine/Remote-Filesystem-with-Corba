@@ -11,7 +11,9 @@ import java.io.InputStreamReader;
 import org.omg.CORBA.ORB;
 
 /**
- * An admin client able to shutdown {@link files.Serveur}
+ * An admin client able to shutdown {@link files.Serveur}.
+ *
+ * @author Jimmy Tournemaine
  */
 public class ShutdownClient {
 

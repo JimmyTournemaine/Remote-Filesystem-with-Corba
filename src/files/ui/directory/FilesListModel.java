@@ -13,6 +13,8 @@ import files.file_type;
 
 /**
  * The model of the list
+ *
+ * @author Jimmy Tournemaine
  */
 public class FilesListModel extends DefaultListModel {
 
@@ -59,7 +61,7 @@ public class FilesListModel extends DefaultListModel {
         clear();
         addParent();
         while (lh.value.next_one(eh)) {
-            this.addElement(eh.value);
+            addElement(eh.value);
         }
     }
 

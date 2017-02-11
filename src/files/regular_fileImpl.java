@@ -11,6 +11,9 @@ import java.io.RandomAccessFile;
 /**
  * An implementation of {@link files.regular_file } interface defined by
  * <a href="../../files.idl">files.idl</a>
+ *
+ * @author Pierre Siguret
+ * @author Jimmy Tournemaine
  */
 public class regular_fileImpl extends files.regular_filePOA {
 

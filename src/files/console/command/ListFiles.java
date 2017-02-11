@@ -11,7 +11,9 @@ import files.file_listHolder;
 import files.file_type;
 
 /**
- * A command to list files in the current directory
+ * A command to list files in the current directory.
+ *
+ * @author Jimmy Tournemaine
  */
 public class ListFiles extends FolderCommand {
 

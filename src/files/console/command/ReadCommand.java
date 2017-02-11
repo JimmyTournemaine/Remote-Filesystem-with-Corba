@@ -10,7 +10,9 @@ import files.invalid_operation;
 import files.regular_file;
 
 /**
- * A command read some characters in a file
+ * A command read some characters in a file.
+ *
+ * @author Jimmy Tournemaine
  */
 public class ReadCommand extends FileCommand {
 

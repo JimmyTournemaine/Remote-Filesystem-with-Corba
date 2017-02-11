@@ -9,6 +9,8 @@ import javax.swing.ImageIcon;
 
 /**
  * A factory to get icons depending of the type of the file
+ *
+ * @author Jimmy Tournemaine
  */
 class DirectoryEntryIconFactory {
 

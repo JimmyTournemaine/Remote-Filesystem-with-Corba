@@ -22,6 +22,8 @@ import files.ui.directory.controller.MenuController;
 
 /**
  * The GUI client of {@link files.Serveur}
+ *
+ * @author Jimmy Tournemaine
  */
 public class ClientUI extends JFrame {
 

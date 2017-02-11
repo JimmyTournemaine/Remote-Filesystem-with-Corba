@@ -9,6 +9,8 @@ import files.regular_file;
 
 /**
  * A command to write in a file.
+ *
+ * @author Jimmy Tournemaine
  */
 public class WriteCommand extends FileCommand {
 
